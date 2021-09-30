@@ -34,4 +34,7 @@ git clone https://github.com/riverscn/openwrt-iptvhelper.git package/openwrt-ipt
 #添加smartdns
 git clone https://github.com/pymumu/openwrt-smartdns package/smartdns
 git clone -b lede https://github.com/pymumu/luci-app-smartdns.git package/luci-app-smartdns
-
+# Add luci-theme-argon
+git clone --depth=1 -b 18.06 https://github.com/jerrykuku/luci-theme-argon
+git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config
+rm -rf ../lean/luci-theme-argon
