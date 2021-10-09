@@ -25,7 +25,7 @@ git clone https://github.com/openwrt-develop/luci-theme-atmaterial.git package/l
 git clone https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon
 
 git clone https://github.com/sirpdboy/luci-app-netdata.git package/luci-app-netdata
-rm -rf ../lean/luci-app-netdata
+
 #添加额外非必须软件包
 git clone https://github.com/rufengsuixing/luci-app-adguardhome.git package/luci-app-adguardhome
 git clone https://github.com/vernesong/OpenClash.git package/OpenClash
