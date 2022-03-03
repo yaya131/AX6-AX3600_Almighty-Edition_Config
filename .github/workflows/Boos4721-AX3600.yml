@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: AX3600 Almighty Edition
+name: Boos4721-AX3600
 
 on:
   repository_dispatch:
