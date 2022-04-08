@@ -24,7 +24,7 @@ git clone https://github.com/Leo-Jo-My/luci-theme-opentomcat.git package/luci-th
 git clone https://github.com/openwrt-develop/luci-theme-atmaterial.git package/luci-theme-atmaterial
 git clone https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon
 
-git clone https://github.com/kiddin9/openwrt-packages.git package/openwrt-packages
+#git clone https://github.com/kiddin9/openwrt-packages.git package/openwrt-packages
 
 git clone https://github.com/sirpdboy/luci-app-netdata.git package/luci-app-netdata
 
