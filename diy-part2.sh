@@ -42,3 +42,6 @@ git clone -b lede https://github.com/pymumu/luci-app-smartdns.git package/luci-a
 #git clone --depth=1 -b 18.06 https://github.com/jerrykuku/luci-theme-argon
 #git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config
 #rm -rf ../lean/luci-theme-argon
+sed -i 's/$1$A.UJJRuK$JaVYm.Wv9E/SiwyNDDqgW/:19092:0:99999:7:::/$1$ttZeRDG3$V0pEG8rex5imt2uWJp3gO\/:18875:0:99999:7:::/g' package/base-files/files/etc/shadow
+sed -i 's/OpenWrt_2.4G/OpenWrt_5G/g'  package/kernel/mac80211/files/lib/wifi/mac80211.sh
+sed -i '185s/OpenWrt_5G/OpenWrt_2.4G/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
