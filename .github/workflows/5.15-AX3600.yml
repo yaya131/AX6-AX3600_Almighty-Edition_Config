@@ -21,7 +21,7 @@ on:
 
 env:
   REPO_URL: https://github.com/robimarko/openwrt
-  REPO_BRANCH: ipq807x-5.15
+  REPO_BRANCH: ipq807x-5.15-pr
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: AX3600-5.15.config
   DIY_P1_SH: diy-part1.sh
