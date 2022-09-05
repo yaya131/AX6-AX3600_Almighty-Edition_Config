@@ -21,7 +21,7 @@ on:
 
 env:
   REPO_URL: https://github.com/yaya131/openwrt
-  REPO_BRANCH: master
+  REPO_BRANCH: stable
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: AX6.config
   DIY_P1_SH: diy-part1.sh
