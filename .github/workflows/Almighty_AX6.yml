@@ -20,8 +20,8 @@ on:
         default: 'false'
 
 env:
-  REPO_URL: https://github.com/yaya131/openwrt
-  REPO_BRANCH: stable
+  REPO_URL: https://github.com/yaya131/openwrt-Boos4721-5.10.110
+  REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: AX6.config
   DIY_P1_SH: diy-part1.sh
