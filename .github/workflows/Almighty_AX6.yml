@@ -20,7 +20,7 @@ on:
         default: 'false'
 
 env:
-  REPO_URL: https://github.com/yaya131/openwrt-Boos4721-5.10.110
+  REPO_URL: https://github.com/hochenchong/lede-for-redmi-ax6
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: AX6.config
