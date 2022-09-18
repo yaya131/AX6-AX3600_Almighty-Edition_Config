@@ -20,7 +20,7 @@ on:
         default: 'false'
 
 env:
-  REPO_URL: https://github.com/hochenchong/lede-for-redmi-ax6
+  REPO_URL: https://github.com/yaya131/lede-for-XaioMi
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: AX3600.config
