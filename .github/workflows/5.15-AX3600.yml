@@ -162,6 +162,13 @@ jobs:
         touch release.txt
         [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 [Cowtransfer](${{ steps.cowtransfer.outputs.url }})" >> release.txt
         [ $UPLOAD_WETRANSFER = true ] && echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
+        echo "Xiaomi-AX3600-5.15 Openwrt 固件配置：" >> release.txt
+        echo "IP:192.168.10.1" >> release.txt
+        echo "WEB登陆账户：root" >> release.txt
+        echo "密码：password" >> release.txt
+        echo "固件源码：https://github.com/robimarko/openwrt" >> release.txt
+        echo "固件内核版本：5.15" >> release.txt
+        echo "${{ env.useVersionInfo }}" >> release.txt
         echo "::set-output name=status::success"
 
     - name: Upload firmware to release
