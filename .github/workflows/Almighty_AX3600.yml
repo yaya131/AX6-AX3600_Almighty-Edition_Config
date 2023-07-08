@@ -208,7 +208,7 @@ jobs:
         cd openwrt/bin/targets/*/*
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
-        echo "::set-output name=status::success"
+        echo "status=success" >>$GITHUB_OUTPUT
 
     - name: Upload firmware directory
       uses: actions/upload-artifact@main
