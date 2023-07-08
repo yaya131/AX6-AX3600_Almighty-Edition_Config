@@ -33,8 +33,6 @@ env:
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
-  FILE_NAME: IPQ8071A
-  PRODUCT_NAME: IPQ8071A
 
 jobs:
   build:
