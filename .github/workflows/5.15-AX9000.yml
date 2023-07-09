@@ -20,8 +20,8 @@ on:
         default: 'false'
 
 env:
-  REPO_URL: https://github.com/openwrt/openwrt
-  REPO_BRANCH: master
+  REPO_URL: https://github.com/AgustinLorenzo/openwrt
+  REPO_BRANCH: main
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: AX9000-5.15.config
   DIY_P1_SH: diy-part1.sh
