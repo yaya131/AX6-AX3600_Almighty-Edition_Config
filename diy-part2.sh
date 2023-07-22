@@ -37,8 +37,9 @@ git clone https://github.com/riverscn/openwrt-iptvhelper.git package/openwrt-ipt
 #git clone https://github.com/jerrykuku/luci-app-jd-dailybonus.git package/luci-app-jd-dailybonus
 #添加smartdns
 git clone https://github.com/kiddin9/luci-app-dnsfilter.git package/luci-app-dnsfilter
-#添加luci-app-eqos
-git clone https://github.com/garypang13/luci-app-eqos package/luci-app-eqos
+
+#添加luci-app-eqos 参考地址 https://github.com/kenzok8/openwrt-packages/tree/master/luci-app-eqos
+git clone https://github.com/garypang13/luci-app-eqos package/luci-app-eqos  #内网IP限速工具
 
 git clone https://github.com/pymumu/openwrt-smartdns package/smartdns
 git clone -b lede https://github.com/pymumu/luci-app-smartdns.git package/luci-app-smartdns
