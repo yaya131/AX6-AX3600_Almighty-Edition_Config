@@ -1,0 +1,178 @@
+#云编译公用核心
+name: OWRT-CORE
+
+on:
+  #公用核心标识
+  workflow_call:
+    inputs:
+      OWRT_TARGET:
+        required: true
+        type: string
+      OWRT_THEME:
+        required: true
+        type: string
+      OWRT_NAME:
+        required: true
+        type: string
+      OWRT_URL:
+        required: true
+        type: string
+      OWRT_PW:
+        required: true
+        type: string
+      OWRT_IP:
+        required: true
+        type: string
+
+env:
+  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+  OWRT_TARGET: ${{inputs.OWRT_TARGET}}
+  OWRT_THEME: ${{inputs.OWRT_THEME}}
+  OWRT_NAME: ${{inputs.OWRT_NAME}}
+  OWRT_URL: ${{inputs.OWRT_URL}}
+  OWRT_PW: ${{inputs.OWRT_PW}}
+  OWRT_IP: ${{inputs.OWRT_IP}}
+
+jobs:
+  owrt_core:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Projects
+        uses: actions/checkout@main
+
+      - name: Initialization Environment
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          docker rmi $(docker images -q)
+          sudo -E rm -rf $(cat $GITHUB_WORKSPACE/Depends.txt | sed -n "1{s/\r$//;p;q}")
+          sudo -E apt -yqq update
+          sudo -E apt -yqq purge $(cat $GITHUB_WORKSPACE/Depends.txt | sed -n "2{s/\r$//;p;q}")
+          sudo -E apt -yqq full-upgrade
+          sudo -E apt -yqq install $(cat $GITHUB_WORKSPACE/Depends.txt | sed -n "3{s/\r$//;p;q}")
+          sudo -E apt -yqq autoremove --purge
+          sudo -E apt -yqq autoclean
+          sudo -E apt -yqq clean
+          sudo -E systemctl daemon-reload
+          sudo -E timedatectl set-timezone "Asia/Shanghai"
+
+      - name: Initialization Values
+        run: |
+          export OWRT_DATE=$(TZ=UTC-8 date +"%y.%m.%d_%H.%M.%S")
+          export OWRT_SOURCE=$(echo $OWRT_URL | cut -d '/' -f 5-)
+          export OWRT_TYPE=$(sed -n "1{s/^#//;s/\r$//;p;q}" $GITHUB_WORKSPACE/Config/$OWRT_TARGET.txt)
+
+          echo "OWRT_SOURCE=$OWRT_SOURCE" >> $GITHUB_ENV
+          echo "OWRT_TARGET=$OWRT_TARGET" >> $GITHUB_ENV
+          echo "OWRT_DATE=$OWRT_DATE" >> $GITHUB_ENV
+          echo "OWRT_TYPE=$OWRT_TYPE" >> $GITHUB_ENV
+          echo "OWRT_PW=$OWRT_PW" >> $GITHUB_ENV
+          echo "OWRT_IP=$OWRT_IP" >> $GITHUB_ENV
+
+      - name: Check Scripts
+        run: |
+          cd ./Scripts
+
+          dos2unix ./*.sh
+          chmod +x ./*.sh
+
+      - name: Clone OWRT Code
+        run: |
+          git clone $OWRT_URL ./owrt
+          
+      - name: Load custom feeds
+        run: |
+          cd ./owrt
+          echo 'src-git smpackage https://github.com/kenzok8/small-package' >> feeds.conf.default
+
+      - name: Update Feeds
+        run: |
+          cd ./owrt
+
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+
+      - name: Custom Scripts
+        run: |
+          cd ./owrt
+
+          $GITHUB_WORKSPACE/Scripts/Settings.sh
+
+          cd ./package
+
+          $GITHUB_WORKSPACE/Scripts/Plugins.sh
+
+      - name: Custom Settings
+        run: |
+          cd ./owrt
+
+          rm -rf ./tmp* ./.config*
+          cat $GITHUB_WORKSPACE/Config/$OWRT_TARGET.txt $GITHUB_WORKSPACE/Config/General.txt >> .config
+
+          $GITHUB_WORKSPACE/Scripts/Extras.sh
+
+          make defconfig
+
+      - name: Cleanup Toolchain
+        run: |
+          cd ./owrt
+
+          make dirclean
+
+      - name: Download Packages
+        run: |
+          cd ./owrt
+
+          make download -j$(nproc)
+
+      - name: Compile Firmware
+        run: |
+          cd ./owrt
+
+          make -j$(nproc) || make -j1 V=s
+
+          echo "======================="
+          df -h
+          echo "======================="
+          du -h --max-depth=1
+          echo "======================="
+
+      - name: Package Firmware
+        run: |
+          cd ./owrt && mkdir ./upload
+
+          rm -rf $(find ./bin/targets/ -iregex ".*\(json\|manifest\|buildinfo\|sha256sums\|packages\)$")
+          cp -rf $(find ./bin/targets/ -type f -iname "*.*") ./upload/
+          cp -rf ./.config ./upload/Config_"$OWRT_TARGET"_"$OWRT_SOURCE"_"$OWRT_DATE".txt
+
+          cd ./upload
+
+          $GITHUB_WORKSPACE/Scripts/Renames.sh
+
+      - name: Release Firmware
+        uses: softprops/action-gh-release@master
+        with:
+          tag_name: ${{env.OWRT_TARGET}}_${{env.OWRT_SOURCE}}_${{env.OWRT_DATE}}
+          files: ./owrt/upload/*.*
+          body: |
+            这是个平台固件包，内含多个设备！
+            请注意选择你需要的设备固件！
+            不要问，更就完事了！
+
+            源码：${{env.OWRT_SOURCE}}
+            平台：${{env.OWRT_TARGET}}
+            设备：${{env.OWRT_TYPE}}
+            密码：${{env.OWRT_PW}}
+            地址：${{env.OWRT_IP}}
+
+      - name: Delete Old Releases
+        uses: dev-drprasad/delete-older-releases@master
+        with:
+          keep_latest: 6
+          delete_tags: true
+
+      - name: Delete Old Workflows
+        uses: Mattraks/delete-workflow-runs@main
+        with:
+          retain_days: 0
+          keep_minimum_runs: 1

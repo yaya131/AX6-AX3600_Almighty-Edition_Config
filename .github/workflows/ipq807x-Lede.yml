@@ -1,0 +1,31 @@
+#CI项目名
+name: ipq807x-Lede
+
+on:
+  #自动编译：每天早上4点
+  schedule:
+    - cron: 0 20 * * *
+  #手动编译
+  workflow_dispatch:
+
+#CI权限
+permissions: write-all
+
+#CI任务
+jobs:
+  owrt_config:
+    #调用公用编译核心OWRT-CORE.yml
+    uses: ./.github/workflows/OWRT-CORE.yml
+    with:
+      #编译，ipq807x通用配置
+      OWRT_TARGET: ipq807x
+      #默认主题
+      OWRT_THEME: bootstrap
+      #默认主机名
+      OWRT_NAME: ipq807x
+      #默认密码，仅作展示，更改无效
+      OWRT_PW: password
+      #默认地址
+      OWRT_IP: 192.168.31.1
+      #默认源码
+      OWRT_URL: https://github.com/coolsnowwolf/lede.git
